@@ -7,18 +7,25 @@ app.use(cors());
 app.use(express.json());
 
 const FILE = "events.json";
-const ADMIN_PASSWORD = "1234";
+
+// 🔐 senha agora vem do ambiente (Render)
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
 
 // carregar eventos
 function loadEvents() {
   if (!fs.existsSync(FILE)) return [];
-  return JSON.parse(fs.readFileSync(FILE));
+  return JSON.parse(fs.readFileSync(FILE, "utf-8"));
 }
 
 // salvar eventos
 function saveEvents(events) {
   fs.writeFileSync(FILE, JSON.stringify(events, null, 2));
 }
+
+// rota teste (agora no lugar certo)
+app.get("/", (req, res) => {
+  res.send("API funcionando");
+});
 
 // GET
 app.get("/events", (req, res) => {
@@ -55,13 +62,9 @@ app.delete("/events/:index", (req, res) => {
   res.json(events);
 });
 
-// PORTA (IMPORTANTE PRO RENDER)
+// PORTA (Render usa isso automaticamente)
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
-  console.log("Servidor rodando");
-
-app.get("/", (req, res) => {
-res.send("API funcionando");
-});
+  console.log("Servidor rodando na porta " + PORT);
 });
