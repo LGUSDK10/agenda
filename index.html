@@ -310,16 +310,31 @@ async function login() {
   const inputPass = document.getElementById("password").value;
   if(!inputPass) return showToast("Digite a senha", "error");
 
-  // Tentamos fazer uma busca simples (ou uma rota de teste) enviando a senha
-  // Se o servidor aceitar a senha nesta requisição, o login é válido
   try {
-    const res = await fetch(API + "/events", {
-      headers: { "x-password": inputPass } // Exemplo enviando por header
+    const res = await fetch(API + "/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ password: inputPass })
     });
 
-    if (res.status === 401) {
-      throw new Error("Senha incorreta!");
-    }
+    if(!res.ok) throw new Error();
+
+    isAdmin = true;
+    authPassword = inputPass;
+
+    document.getElementById("adminPanel").style.display = "block";
+    document.getElementById("loginBtn").innerHTML = "🔓 Sair";
+    closeLogin();
+
+    showToast("Acesso autorizado!");
+    renderAll();
+
+  } catch (e) {
+    showToast("Senha inválida!", "error");
+  }
+}
 
     // Se passou daqui, a senha está certa
     isAdmin = true; 
