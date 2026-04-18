@@ -7,8 +7,6 @@ app.use(cors());
 app.use(express.json());
 
 const FILE = "events.json";
-
-// 🔐 senha agora vem do ambiente (Render)
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
 
 // carregar eventos
@@ -22,17 +20,28 @@ function saveEvents(events) {
   fs.writeFileSync(FILE, JSON.stringify(events, null, 2));
 }
 
-// rota teste (agora no lugar certo)
+// rota teste
 app.get("/", (req, res) => {
   res.send("API funcionando");
 });
 
-// GET
+// 🔐 LOGIN (NOVO)
+app.post("/login", (req, res) => {
+  const { password } = req.body;
+
+  if (password === ADMIN_PASSWORD) {
+    return res.json({ success: true });
+  }
+
+  return res.status(401).json({ error: "Senha inválida" });
+});
+
+// GET eventos
 app.get("/events", (req, res) => {
   res.json(loadEvents());
 });
 
-// POST
+// POST evento
 app.post("/events", (req, res) => {
   const { text, date, password } = req.body;
 
@@ -47,7 +56,7 @@ app.post("/events", (req, res) => {
   res.json(events);
 });
 
-// DELETE
+// DELETE evento
 app.delete("/events/:index", (req, res) => {
   const { password } = req.body;
 
@@ -62,7 +71,7 @@ app.delete("/events/:index", (req, res) => {
   res.json(events);
 });
 
-// PORTA (Render usa isso automaticamente)
+// porta
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
