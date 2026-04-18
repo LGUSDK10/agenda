@@ -306,18 +306,33 @@ function toggleLogin() {
 }
 function closeLogin() { document.getElementById("loginModal").style.display = "none"; document.getElementById("password").value = ""; }
 
-function login() {
+async function login() {
   const inputPass = document.getElementById("password").value;
   if(!inputPass) return showToast("Digite a senha", "error");
-  
-  // A senha agora fica salva na memória e será validada diretamente pelo backend ao tentar adicionar/excluir
-  isAdmin = true; 
-  authPassword = inputPass;
-  document.getElementById("adminPanel").style.display = "block";
-  document.getElementById("loginBtn").innerHTML = "🔓 Sair";
-  closeLogin(); 
-  showToast("Modo Admin ativado."); 
-  renderAll();
+
+  // Tentamos fazer uma busca simples (ou uma rota de teste) enviando a senha
+  // Se o servidor aceitar a senha nesta requisição, o login é válido
+  try {
+    const res = await fetch(API + "/events", {
+      headers: { "x-password": inputPass } // Exemplo enviando por header
+    });
+
+    if (res.status === 401) {
+      throw new Error("Senha incorreta!");
+    }
+
+    // Se passou daqui, a senha está certa
+    isAdmin = true; 
+    authPassword = inputPass;
+    document.getElementById("adminPanel").style.display = "block";
+    document.getElementById("loginBtn").innerHTML = "🔓 Sair";
+    closeLogin(); 
+    showToast("Acesso autorizado!");
+    renderAll();
+
+  } catch (e) {
+    showToast("Senha inválida!", "error");
+  }
 }
 
 // --- DADOS ---
