@@ -1,493 +1,676 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Agenda da Turma | 2º Informática</title>
-  <style>
-    :root {
-      --primary-blue: #1a73e8;
-      --secondary-blue: #e8f0fe;
-      --bg-color: #f0f4f8;
-      --card-bg: #ffffff;
-      --text-main: #202124;
-      --text-muted: #5f6368;
-      --border-color: #dadce0;
-      --danger: #ea4335;
-      --success: #0f9d58;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agenda da Turma | 2º Informática</title>
+    <style>
+        :root {
+            --primary-blue: #1a73e8;
+            --secondary-blue: #e8f0fe;
+            --bg-color: #f0f4f8;
+            --card-bg: #ffffff;
+            --text-main: #202124;
+            --text-muted: #5f6368;
+            --border-color: #dadce0;
+            --danger: #ea4335;
+            --success: #0f9d58;
+        }
 
-    /* --- TEMA ESCURO --- */
-    body.dark-mode {
-      --bg-color: #121212;
-      --card-bg: #1e1e1e;
-      --text-main: #e8eaed;
-      --text-muted: #9aa0a6;
-      --border-color: #3c4043;
-      --secondary-blue: #172b4d;
-    }
+        /* --- TEMA ESCURO --- */
+        body.dark-mode {
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --text-main: #e8eaed;
+            --text-muted: #9aa0a6;
+            --border-color: #3c4043;
+            --secondary-blue: #172b4d;
+        }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-    body {
-      font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-      background-color: var(--bg-color);
-      color: var(--text-main);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      min-height: 100vh;
-      transition: background-color 0.3s ease;
-    }
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            transition: background-color 0.3s ease;
+        }
 
-    /* --- HEADER --- */
-    header {
-      width: 100%;
-      background: var(--primary-blue);
-      color: white;
-      padding: 15px 0;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      position: sticky;
-      top: 0;
-      z-index: 10;
-    }
+        /* --- HEADER --- */
+        header {
+            width: 100%;
+            background: var(--primary-blue);
+            color: white;
+            padding: 15px 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
 
-    .header-content {
-      width: 95%;
-      max-width: 1000px;
-      margin: 0 auto;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
+        .header-content {
+            width: 95%;
+            max-width: 1000px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-    .header-title { font-size: 24px; font-weight: 600; }
+        .header-title {
+            font-size: 24px;
+            font-weight: 600;
+        }
 
-    .header-actions { display: flex; align-items: center; gap: 10px; }
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
 
-    .theme-toggle, .login-icon {
-      background: rgba(255,255,255,0.2);
-      border: none;
-      color: white;
-      padding: 8px 15px;
-      border-radius: 20px;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      font-weight: 500;
-    }
-    .theme-toggle:hover, .login-icon:hover { background: rgba(255,255,255,0.3); transform: translateY(-2px); }
+        .theme-toggle, .login-icon {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
 
-    /* --- NAVEGAÇÃO --- */
-    .tabs {
-      display: flex;
-      gap: 10px;
-      margin-top: 20px;
-      background: var(--card-bg);
-      padding: 5px;
-      border-radius: 30px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    }
+        .theme-toggle:hover, .login-icon:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+        }
 
-    .tab-btn {
-      background: transparent;
-      border: none;
-      padding: 10px 25px;
-      border-radius: 25px;
-      font-weight: 600;
-      color: var(--text-muted);
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
+        /* --- NAVEGAÇÃO --- */
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            background: var(--card-bg);
+            padding: 5px;
+            border-radius: 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
 
-    .tab-btn.active { background: var(--secondary-blue); color: var(--primary-blue); }
+        .tab-btn {
+            background: transparent;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 25px;
+            font-weight: 600;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
 
-    /* --- CONTAINER --- */
-    .container { width: 95%; max-width: 1000px; margin: 25px auto; }
-    .view-section { display: none; animation: fadeIn 0.4s ease; }
-    .view-section.active { display: block; }
+        .tab-btn.active {
+            background: var(--secondary-blue);
+            color: var(--primary-blue);
+        }
 
-    /* --- ADMIN PANEL --- */
-    #adminPanel {
-      background: var(--card-bg);
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-      margin-bottom: 25px;
-      border-left: 5px solid var(--primary-blue);
-      display: none;
-      animation: slideDown 0.4s ease;
-    }
+        /* --- CONTAINER --- */
+        .container {
+            width: 95%;
+            max-width: 1000px;
+            margin: 25px auto;
+        }
 
-    .admin-form { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 15px; }
+        .view-section {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
 
-    input {
-      flex: 1; min-width: 150px; padding: 12px;
-      border: 1px solid var(--border-color);
-      border-radius: 8px; background: var(--card-bg); color: var(--text-main);
-    }
-    input:focus { outline: none; border-color: var(--primary-blue); box-shadow: 0 0 0 3px var(--secondary-blue); }
+        .view-section.active {
+            display: block;
+        }
 
-    .btn-primary {
-      background: var(--primary-blue); color: white; border: none;
-      padding: 12px 25px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.2s;
-    }
-    .btn-primary:hover { opacity: 0.9; }
-    
-    .btn-secondary {
-      background: #9aa0a6; color: white; border: none;
-      padding: 12px 25px; border-radius: 8px; font-weight: 600; cursor: pointer;
-    }
+        /* --- ADMIN PANEL --- */
+        #adminPanel {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            margin-bottom: 25px;
+            border-left: 5px solid var(--primary-blue);
+            display: none;
+            animation: slideDown 0.4s ease;
+        }
 
-    /* --- LIST VIEW --- */
-    .event-card {
-      background: var(--card-bg); padding: 20px; border-radius: 12px;
-      margin-bottom: 12px; display: flex; justify-content: space-between;
-      align-items: center; border-left: 4px solid var(--primary-blue);
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    }
+        .admin-form {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
 
-    .event-info strong { font-size: 18px; display: block; margin-bottom: 4px; }
-    .event-info small { color: var(--primary-blue); background: var(--secondary-blue); padding: 3px 10px; border-radius: 15px; font-weight: 600; }
+        input {
+            flex: 1;
+            min-width: 150px;
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background: var(--card-bg);
+            color: var(--text-main);
+        }
 
-    .btn-delete { background: var(--danger); color: white; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; }
+        input:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 3px var(--secondary-blue);
+        }
 
-    /* --- CALENDAR VIEW --- */
-    .calendar-header {
-      display: flex; justify-content: space-between; align-items: center;
-      background: var(--card-bg); padding: 15px; border-radius: 12px 12px 0 0;
-      border-bottom: 1px solid var(--border-color);
-    }
-    .calendar-nav-btn {
-      background: var(--secondary-blue); color: var(--primary-blue); border: none;
-      padding: 8px 15px; border-radius: 6px; font-weight: bold; cursor: pointer;
-    }
-    .calendar-grid {
-      display: grid; grid-template-columns: repeat(5, 1fr); /* 5 dias letivos */
-      background: var(--card-bg); border-radius: 0 0 12px 12px; overflow: hidden;
-    }
-    .calendar-day-name { background: var(--secondary-blue); padding: 10px; text-align: center; font-weight: 600; color: var(--primary-blue); border-bottom: 1px solid var(--border-color); }
-    .calendar-cell { min-height: 120px; padding: 5px; border-right: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 5px; }
-    .calendar-cell:last-child { border-right: none; }
-    .calendar-cell.today { background: var(--secondary-blue); }
-    .day-number { text-align: right; font-weight: bold; font-size: 14px; color: var(--text-muted); margin-bottom: 5px; }
-    .cal-event-badge { background: var(--primary-blue); color: white; font-size: 12px; padding: 5px; border-radius: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .btn-primary {
+            background: var(--primary-blue);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
 
-    /* --- TOASTS --- */
-    #toast-container { position: fixed; bottom: 20px; right: 20px; z-index: 1000; display: flex; flex-direction: column; gap: 10px; }
-    .toast { background: #323232; color: white; padding: 12px 20px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.3); animation: slideIn 0.3s ease, fadeOut 0.3s ease 2.7s forwards; }
-    .toast.success { border-left: 5px solid var(--success); }
-    .toast.error { border-left: 5px solid var(--danger); }
+        .btn-primary:hover {
+            opacity: 0.9;
+        }
 
-    /* --- LOADER --- */
-    .loader { border: 4px solid var(--border-color); border-top: 4px solid var(--primary-blue); border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; margin: 20px auto; }
+        .btn-secondary {
+            background: #9aa0a6;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+        }
 
-    /* --- MODAL --- */
-    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); justify-content: center; align-items: center; z-index: 20; }
-    .modal-content { background: var(--card-bg); padding: 30px; border-radius: 12px; width: 90%; max-width: 350px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
-    .modal-actions { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
+        /* --- LIST VIEW --- */
+        .event-card {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-left: 4px solid var(--primary-blue);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
 
-    @keyframes spin { 100% { transform: rotate(360deg); } }
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-    @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-    @keyframes slideDown { from { opacity: 0; transform: translateY(-15px); } to { opacity: 1; transform: translateY(0); } }
-    @keyframes fadeOut { to { opacity: 0; visibility: hidden; } }
+        .event-info strong {
+            font-size: 18px;
+            display: block;
+            margin-bottom: 4px;
+        }
 
-    @media (max-width: 600px) { .calendar-cell { min-height: 80px; } .day-number { font-size: 12px; } .cal-event-badge { font-size: 10px; } }
-  </style>
+        .event-info small {
+            color: var(--primary-blue);
+            background: var(--secondary-blue);
+            padding: 3px 10px;
+            border-radius: 15px;
+            font-weight: 600;
+        }
+
+        .btn-delete {
+            background: var(--danger);
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        /* --- CALENDAR VIEW --- */
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--card-bg);
+            padding: 15px;
+            border-radius: 12px 12px 0 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .calendar-nav-btn {
+            background: var(--secondary-blue);
+            color: var(--primary-blue);
+            border: none;
+            padding: 8px 15px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr); /* 5 dias letivos */
+            background: var(--card-bg);
+            border-radius: 0 0 12px 12px;
+            overflow: hidden;
+        }
+
+        .calendar-day-name {
+            background: var(--secondary-blue);
+            padding: 10px;
+            text-align: center;
+            font-weight: 600;
+            color: var(--primary-blue);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .calendar-cell {
+            min-height: 120px;
+            padding: 5px;
+            border-right: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .calendar-cell:last-child {
+            border-right: none;
+        }
+
+        .calendar-cell.today {
+            background: var(--secondary-blue);
+        }
+
+        .day-number {
+            text-align: right;
+            font-weight: bold;
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 5px;
+        }
+
+        .cal-event-badge {
+            background: var(--primary-blue);
+            color: white;
+            font-size: 12px;
+            padding: 5px;
+            border-radius: 4px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        /* --- TOASTS --- */
+        #toast-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .toast {
+            background: #323232;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            animation: slideIn 0.3s ease, fadeOut 0.3s ease 2.7s forwards;
+        }
+
+        .toast.success {
+            border-left: 5px solid var(--success);
+        }
+
+        .toast.error {
+            border-left: 5px solid var(--danger);
+        }
+
+        /* --- LOADER --- */
+        .loader {
+            border: 4px solid var(--border-color);
+            border-top: 4px solid var(--primary-blue);
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        /* --- MODAL --- */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(4px);
+            justify-content: center;
+            align-items: center;
+            z-index: 20;
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 350px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        .modal-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        @keyframes spin {
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeOut {
+            to { opacity: 0; visibility: hidden; }
+        }
+
+        @media (max-width: 600px) {
+            .calendar-cell { min-height: 80px; }
+            .day-number { font-size: 12px; }
+            .cal-event-badge { font-size: 10px; }
+        }
+    </style>
 </head>
 <body>
+    <header>
+        <div class="header-content">
+            <div class="header-title">📅 Agenda 2º Info</div>
+            <div class="header-actions">
+                <button class="theme-toggle" onclick="toggleTheme()" id="themeIcon">🌙</button>
+                <button class="login-icon" id="loginBtn" onclick="toggleLogin()">🔒 Admin</button>
+            </div>
+        </div>
+    </header>
 
-<header>
-  <div class="header-content">
-    <div class="header-title">📅 Agenda 2º Info</div>
-    <div class="header-actions">
-      <button class="theme-toggle" onclick="toggleTheme()" id="themeIcon">🌙</button>
-      <button class="login-icon" id="loginBtn" onclick="toggleLogin()">🔒 Admin</button>
+    <div class="tabs">
+        <button class="tab-btn active" data-target="list" onclick="switchTab('list', event)">📄 Lista</button>
+        <button class="tab-btn" data-target="calendar" onclick="switchTab('calendar', event)">🗓️ Calendário</button>
     </div>
-  </div>
-</header>
 
-<div class="tabs">
-  <button class="tab-btn active" data-target="list" onclick="switchTab('list', event)">📄 Lista</button>
-  <button class="tab-btn" data-target="calendar" onclick="switchTab('calendar', event)">🗓️ Calendário</button>
-</div>
+    <div class="container">
+        <div id="adminPanel">
+            <h3 style="color: var(--primary-blue)">Novo Lembrete</h3>
+            <div class="admin-form">
+                <input type="text" id="text" placeholder="Ex: Prova de Banco de Dados">
+                <input type="date" id="date">
+                <input type="time" id="time" title="Horário opcional">
+                <button class="btn-primary" onclick="addEvent()">Adicionar</button>
+            </div>
+        </div>
 
-<div class="container">
-  <div id="adminPanel">
-    <h3 style="color: var(--primary-blue)">Novo Lembrete</h3>
-    <div class="admin-form">
-      <input type="text" id="text" placeholder="Ex: Prova de Banco de Dados">
-      <input type="date" id="date">
-      <input type="time" id="time" title="Horário opcional">
-      <button class="btn-primary" onclick="addEvent()">Adicionar</button>
+        <div id="view-list" class="view-section active">
+            <div id="events-list"></div>
+        </div>
+
+        <div id="view-calendar" class="view-section">
+            <div class="calendar-header">
+                <button class="calendar-nav-btn" onclick="changeWeek(-1)">❮ Anterior</button>
+                <h2 id="month-display" style="color: var(--primary-blue); font-size: 1.2rem;">Mês Ano</h2>
+                <button class="calendar-nav-btn" onclick="changeWeek(1)">Próxima ❯</button>
+            </div>
+            <div class="calendar-grid" id="calendar-grid"></div>
+        </div>
     </div>
-  </div>
 
-  <div id="view-list" class="view-section active">
-    <div id="events-list"></div>
-  </div>
-
-  <div id="view-calendar" class="view-section">
-    <div class="calendar-header">
-      <button class="calendar-nav-btn" onclick="changeWeek(-1)">❮ Anterior</button>
-      <h2 id="month-display" style="color: var(--primary-blue); font-size: 1.2rem;">Mês Ano</h2>
-      <button class="calendar-nav-btn" onclick="changeWeek(1)">Próxima ❯</button>
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <h3 style="margin-bottom: 15px; color: var(--primary-blue)">Acesso Admin</h3>
+            <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 15px;">Insira a senha para gerenciar os eventos.</p>
+            <input type="password" id="password" placeholder="Sua senha">
+            <div class="modal-actions">
+                <button class="btn-primary" onclick="login()">Entrar</button>
+                <button class="btn-secondary" onclick="closeLogin()">Cancelar</button>
+            </div>
+        </div>
     </div>
-    <div class="calendar-grid" id="calendar-grid"></div>
-  </div>
-</div>
 
-<div id="loginModal" class="modal">
-  <div class="modal-content">
-    <h3 style="margin-bottom: 15px; color: var(--primary-blue)">Acesso Admin</h3>
-    <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 15px;">Insira a senha para gerenciar os eventos.</p>
-    <input type="password" id="password" placeholder="Sua senha">
-    <div class="modal-actions">
-      <button class="btn-primary" onclick="login()">Entrar</button>
-      <button class="btn-secondary" onclick="closeLogin()">Cancelar</button>
-    </div>
-  </div>
-</div>
+    <script>
+        const API = "https://agenda-49vs.onrender.com";
+        let isAdmin = false;
+        let authPassword = "";
+        let allEvents = [];
+        let currentWeekOffset = 0; // 0 = semana atual, -1 passada, 1 próxima
 
-<script>
-const API = "https://agenda-49vs.onrender.com"; 
-let isAdmin = false;
-let authPassword = "";
-let allEvents = [];
-let currentWeekOffset = 0; // 0 = semana atual, -1 passada, 1 próxima
+        // --- INICIALIZAÇÃO ---
+        document.addEventListener("DOMContentLoaded", () => {
+            if(localStorage.getItem('darkMode') === 'true') toggleTheme();
+            // Restaura a última aba acessada
+            const savedTab = localStorage.getItem('activeTab') || 'list';
+            const targetBtn = document.querySelector(`.tab-btn[data-target="${savedTab}"]`);
+            if(targetBtn) switchTab(savedTab, { target: targetBtn });
+            fetchEvents();
+        });
 
-// --- INICIALIZAÇÃO ---
-document.addEventListener("DOMContentLoaded", () => {
-  if(localStorage.getItem('darkMode') === 'true') toggleTheme();
-  
-  // Restaura a última aba acessada
-  const savedTab = localStorage.getItem('activeTab') || 'list';
-  const targetBtn = document.querySelector(`.tab-btn[data-target="${savedTab}"]`);
-  if(targetBtn) switchTab(savedTab, { target: targetBtn });
-  
-  fetchEvents();
-});
+        // --- TEMA E ABAS ---
+        function toggleTheme() {
+            const isDark = document.body.classList.toggle('dark-mode');
+            document.getElementById('themeIcon').innerText = isDark ? '☀️' : '🌙';
+            localStorage.setItem('darkMode', isDark);
+        }
 
-// --- TEMA E ABAS ---
-function toggleTheme() {
-  const isDark = document.body.classList.toggle('dark-mode');
-  document.getElementById('themeIcon').innerText = isDark ? '☀️' : '🌙';
-  localStorage.setItem('darkMode', isDark);
-}
+        function switchTab(viewName, e) {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.view-section').forEach(s => s.classList.remove('active'));
+            if(e && e.target) e.target.classList.add('active');
+            document.getElementById(`view-${viewName}`).classList.add('active');
+            localStorage.setItem('activeTab', viewName);
+        }
 
-function switchTab(viewName, e) {
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  document.querySelectorAll('.view-section').forEach(s => s.classList.remove('active'));
-  if(e && e.target) e.target.classList.add('active');
-  document.getElementById(`view-${viewName}`).classList.add('active');
-  localStorage.setItem('activeTab', viewName);
-}
+        // --- NOTIFICAÇÕES TOAST ---
+        function showToast(msg, type = 'success') {
+            let container = document.getElementById('toast-container');
+            if (!container) {
+                container = document.createElement('div');
+                container.id = 'toast-container';
+                document.body.appendChild(container);
+            }
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerText = msg;
+            container.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
 
-// --- NOTIFICAÇÕES TOAST ---
-function showToast(msg, type = 'success') {
-  let container = document.getElementById('toast-container');
-  if (!container) { container = document.createElement('div'); container.id = 'toast-container'; document.body.appendChild(container); }
-  const toast = document.createElement('div');
-  toast.className = `toast ${type}`;
-  toast.innerText = msg;
-  container.appendChild(toast);
-  setTimeout(() => toast.remove(), 3000);
-}
+        // --- LOGIN ---
+        function toggleLogin() {
+            if(isAdmin) {
+                isAdmin = false;
+                authPassword = "";
+                document.getElementById("adminPanel").style.display = "none";
+                document.getElementById("loginBtn").innerHTML = "🔒 Admin";
+                showToast("Logout realizado");
+                renderAll();
+            } else {
+                document.getElementById("loginModal").style.display = "flex";
+            }
+        }
 
-// --- LOGIN ---
-function toggleLogin() {
-  if(isAdmin) {
-    isAdmin = false; authPassword = "";
-    document.getElementById("adminPanel").style.display = "none";
-    document.getElementById("loginBtn").innerHTML = "🔒 Admin";
-    showToast("Logout realizado");
-    renderAll();
-  } else { document.getElementById("loginModal").style.display = "flex"; }
-}
-function closeLogin() { document.getElementById("loginModal").style.display = "none"; document.getElementById("password").value = ""; }
+        function closeLogin() {
+            document.getElementById("loginModal").style.display = "none";
+            document.getElementById("password").value = "";
+        }
 
-async function login() {
-  const inputPass = document.getElementById("password").value;
-  if(!inputPass) return showToast("Digite a senha", "error");
+        async function login() {
+            const inputPass = document.getElementById("password").value;
+            if(!inputPass) return showToast("Digite a senha", "error");
+            // Tentamos fazer uma busca simples (ou uma rota de teste) enviando a senha
+            // Se o servidor aceitar a senha nesta requisição, o login é válido
+            try {
+                const res = await fetch(API + "/events", {
+                    headers: { "x-password": inputPass } // Exemplo enviando por header
+                });
+                if (res.status === 401) {
+                    throw new Error("Senha incorreta!");
+                }
+                // Se passou daqui, a senha está certa
+                isAdmin = true;
+                authPassword = inputPass;
+                document.getElementById("adminPanel").style.display = "block";
+                document.getElementById("loginBtn").innerHTML = "🔓 Sair";
+                closeLogin();
+                showToast("Acesso autorizado!");
+                renderAll();
+            } catch (e) {
+                showToast("Senha inválida!", "error");
+            }
+        }
 
-  try {
-    const res = await fetch(API + "/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ password: inputPass })
-    });
+        // --- DADOS ---
+        async function fetchEvents() {
+            const list = document.getElementById("events-list");
+            if(allEvents.length === 0) list.innerHTML = '<div class="loader"></div><p style="text-align:center; color:var(--text-muted)">Conectando ao servidor...</p>';
+            try {
+                const res = await fetch(API + "/events");
+                allEvents = await res.json();
+                if(!Array.isArray(allEvents)) allEvents = [];
+                allEvents.sort((a,b) => new Date(a.date) - new Date(b.date));
+                renderAll();
+            } catch (err) {
+                list.innerHTML = '<p style="text-align:center; color:var(--danger)">Erro ao carregar os dados.</p>';
+            }
+        }
 
-    if(!res.ok) throw new Error();
+        async function addEvent() {
+            const text = document.getElementById("text").value;
+            const date = document.getElementById("date").value;
+            const time = document.getElementById("time").value;
+            if(!text || !date) return showToast("Preencha título e data!", "error");
+            // Se o backend não tem campo de horário separado, concatenamos no texto
+            const finalTitle = time ? `${text} às ${time}` : text;
+            try {
+                const res = await fetch(API + "/events", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ text: finalTitle, date, password: authPassword })
+                });
+                if(!res.ok) throw new Error("Senha incorreta ou erro no servidor");
+                document.getElementById("text").value = "";
+                document.getElementById("time").value = "";
+                showToast("Adicionado!");
+                fetchEvents();
+            } catch(e) {
+                showToast(e.message, "error");
+            }
+        }
 
-    isAdmin = true;
-    authPassword = inputPass;
+        async function removeEvent(idx) {
+            if(!confirm("Tem certeza que deseja excluir este lembrete?")) return;
+            try {
+                const res = await fetch(API + "/events/" + idx, {
+                    method: "DELETE",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ password: authPassword })
+                });
+                if(!res.ok) throw new Error("Senha incorreta");
+                showToast("Removido!", "error");
+                fetchEvents();
+            } catch(e) {
+                showToast(e.message, "error");
+            }
+        }
 
-    document.getElementById("adminPanel").style.display = "block";
-    document.getElementById("loginBtn").innerHTML = "🔓 Sair";
-    closeLogin();
+        // --- RENDER ---
+        function renderAll() {
+            renderList();
+            renderCalendar();
+        }
 
-    showToast("Acesso autorizado!");
-    renderAll();
+        function renderList() {
+            const container = document.getElementById("events-list");
+            container.innerHTML = allEvents.length ? "" : "<p style='text-align:center; color: var(--text-muted); margin-top: 20px;'>Nenhum evento programado.</p>";
+            allEvents.forEach((ev, i) => {
+                const card = document.createElement("div");
+                card.className = "event-card";
+                // Tratamento de data nativo para evitar bugs de fuso horário
+                const dataFormatada = new Date(ev.date + "T00:00:00").toLocaleDateString('pt-BR');
+                card.innerHTML = `<div class="event-info"><strong>${ev.text}</strong><small>📅 ${dataFormatada}</small></div> ${isAdmin ? `<button class="btn-delete" onclick="removeEvent(${i})">Excluir</button>` : ""}`;
+                container.appendChild(card);
+            });
+        }
 
-  } catch (e) {
-    showToast("Senha inválida!", "error");
-  }
-}
+        function changeWeek(step) {
+            currentWeekOffset += step;
+            renderCalendar();
+        }
 
-    // Se passou daqui, a senha está certa
-    isAdmin = true; 
-    authPassword = inputPass;
-    document.getElementById("adminPanel").style.display = "block";
-    document.getElementById("loginBtn").innerHTML = "🔓 Sair";
-    closeLogin(); 
-    showToast("Acesso autorizado!");
-    renderAll();
-
-  } catch (e) {
-    showToast("Senha inválida!", "error");
-  }
-}
-
-// --- DADOS ---
-async function fetchEvents() {
-  const list = document.getElementById("events-list");
-  if(allEvents.length === 0) list.innerHTML = `<div class="loader"></div><p style="text-align:center; color:var(--text-muted)">Conectando ao servidor...</p>`;
-  
-  try {
-    const res = await fetch(API + "/events");
-    allEvents = await res.json();
-    if(!Array.isArray(allEvents)) allEvents = [];
-    allEvents.sort((a,b) => new Date(a.date) - new Date(b.date));
-    renderAll();
-  } catch (err) {
-    list.innerHTML = `<p style="text-align:center; color:var(--danger)">Erro ao carregar os dados.</p>`;
-  }
-}
-
-async function addEvent() {
-  const text = document.getElementById("text").value;
-  const date = document.getElementById("date").value;
-  const time = document.getElementById("time").value;
-  
-  if(!text || !date) return showToast("Preencha título e data!", "error");
-
-  // Se o backend não tem campo de horário separado, concatenamos no texto
-  const finalTitle = time ? `${text} às ${time}` : text;
-
-  try {
-    const res = await fetch(API + "/events", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ text: finalTitle, date, password: authPassword })
-    });
-    
-    if(!res.ok) throw new Error("Senha incorreta ou erro no servidor");
-    
-    document.getElementById("text").value = "";
-    document.getElementById("time").value = "";
-    showToast("Adicionado!"); 
-    fetchEvents();
-  } catch(e) {
-    showToast(e.message, "error");
-  }
-}
-
-async function removeEvent(idx) {
-  if(!confirm("Tem certeza que deseja excluir este lembrete?")) return;
-  try {
-    const res = await fetch(API + "/events/" + idx, {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ password: authPassword })
-    });
-    
-    if(!res.ok) throw new Error("Senha incorreta");
-    showToast("Removido!", "error"); 
-    fetchEvents();
-  } catch(e) {
-    showToast(e.message, "error");
-  }
-}
-
-// --- RENDER ---
-function renderAll() { renderList(); renderCalendar(); }
-
-function renderList() {
-  const container = document.getElementById("events-list");
-  container.innerHTML = allEvents.length ? "" : "<p style='text-align:center; color: var(--text-muted); margin-top: 20px;'>Nenhum evento programado.</p>";
-  
-  allEvents.forEach((ev, i) => {
-    const card = document.createElement("div");
-    card.className = "event-card";
-    
-    // Tratamento de data nativo para evitar bugs de fuso horário
-    const dataFormatada = new Date(ev.date + "T00:00:00").toLocaleDateString('pt-BR');
-    
-    card.innerHTML = `<div class="event-info"><strong>${ev.text}</strong><small>📅 ${dataFormatada}</small></div>
-      ${isAdmin ? `<button class="btn-delete" onclick="removeEvent(${i})">Excluir</button>` : ""}`;
-    container.appendChild(card);
-  });
-}
-
-function changeWeek(step) {
-  currentWeekOffset += step;
-  renderCalendar();
-}
-
-function renderCalendar() {
-  const grid = document.getElementById("calendar-grid");
-  grid.innerHTML = "";
-  
-  const dayNames = ["Seg", "Ter", "Qua", "Qui", "Sex"];
-  dayNames.forEach(d => {
-    const div = document.createElement("div"); 
-    div.className="calendar-day-name"; 
-    div.innerText=d; 
-    grid.appendChild(div);
-  });
-
-  // Lógica para encontrar a Segunda-feira da semana em visualização
-  const curr = new Date();
-  const dayOfWeek = curr.getDay(); // 0 = Dom, 1 = Seg...
-  const distanceToMonday = curr.getDate() - dayOfWeek + (dayOfWeek === 0 ? -6 : 1);
-  const monday = new Date(curr.setDate(distanceToMonday));
-  monday.setDate(monday.getDate() + (currentWeekOffset * 7));
-
-  // Exibição do Mês e Ano baseada na Quarta-feira da semana atual (para transições de mês precisas)
-  const midWeek = new Date(monday);
-  midWeek.setDate(midWeek.getDate() + 2);
-  const months = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
-  document.getElementById("month-display").innerText = `${months[midWeek.getMonth()]} ${midWeek.getFullYear()}`;
-
-  // Preenche de Segunda a Sexta (5 dias)
-  for(let i=0; i<5; i++) {
-    const cellDate = new Date(monday);
-    cellDate.setDate(monday.getDate() + i);
-    
-    const cell = document.createElement("div");
-    cell.className = "calendar-cell";
-    
-    const today = new Date();
-    if(cellDate.toDateString() === today.toDateString()) {
-      cell.classList.add("today");
-    }
-    
-    cell.innerHTML = `<div class="day-number">${cellDate.getDate()}</div>`;
-    
-    const dateStr = `${cellDate.getFullYear()}-${String(cellDate.getMonth()+1).padStart(2,'0')}-${String(cellDate.getDate()).padStart(2,'0')}`;
-    
-    allEvents.filter(e => e.date === dateStr).forEach(e => {
-      const b = document.createElement("div"); 
-      b.className="cal-event-badge"; 
-      b.innerText=e.text; 
-      cell.appendChild(b);
-    });
-    
-    grid.appendChild(cell);
-  }
-}
-</script>
+        function renderCalendar() {
+            const grid = document.getElementById("calendar-grid");
+            grid.innerHTML = "";
+            const dayNames = ["Seg", "Ter", "Qua", "Qui", "Sex"];
+            dayNames.forEach(d => {
+                const div = document.createElement("div");
+                div.className="calendar-day-name";
+                div.innerText=d;
+                grid.appendChild(div);
+            });
+            // Lógica para encontrar a Segunda-feira da semana em visualização
+            const curr = new Date();
+            const dayOfWeek = curr.getDay(); // 0 = Dom, 1 = Seg...
+            const distanceToMonday = curr.getDate() - dayOfWeek + (dayOfWeek === 0 ? -6 : 1);
+            const monday = new Date(curr.setDate(distanceToMonday));
+            monday.setDate(monday.getDate() + (currentWeekOffset * 7));
+            // Exibição do Mês e Ano baseada na Quarta-feira da semana atual (para transições de mês precisas)
+            const midWeek = new Date(monday);
+            midWeek.setDate(midWeek.getDate() + 2);
+            const months = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
+            document.getElementById("month-display").innerText = `${months[midWeek.getMonth()]} ${midWeek.getFullYear()}`;
+            // Preenche de Segunda a Sexta (5 dias)
+            for(let i=0; i<5; i++) {
+                const cellDate = new Date(monday);
+                cellDate.setDate(monday.getDate() + i);
+                const cell = document.createElement("div");
+                cell.className = "calendar-cell";
+                const today = new Date();
+                if(cellDate.toDateString() === today.toDateString()) {
+                    cell.classList.add("today");
+                }
+                cell.innerHTML = `<div class="day-number">${cellDate.getDate()}</div>`;
+                const dateStr = `${cellDate.getFullYear()}-${String(cellDate.getMonth()+1).padStart(2,'0')}-${String(cellDate.getDate()).padStart(2,'0')}`;
+                allEvents.filter(e => e.date === dateStr).forEach(e => {
+                    const b = document.createElement("div");
+                    b.className="cal-event-badge";
+                    b.innerText=e.text;
+                    cell.appendChild(b);
+                });
+                grid.appendChild(cell);
+            }
+        }
+    </script>
 </body>
 </html>
